@@ -1,0 +1,50 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+
+.books {
+  @include column;
+  @include section-padding;
+  margin-bottom: 3rem;
+  margin-top: 7rem;
+  gap: 1.5rem;
+
+  @include tablet {
+    gap: 1rem;
+  }
+
+  &__group {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  &__warning {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-top: 3rem;
+  }
+}
+
+.section {
+  @include column;
+  @include white-bg;
+  align-items: flex-start;
+  width: 70vw;
+
+  &__topic {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1.5px solid $color-green;
+    width: 100%;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  &__title {
+    @include center;
+    gap: 0.5rem;
+  }
+}

@@ -42,7 +42,7 @@ function Header() {
       <nav className="header__nav">
         <ul className="header__nav-list">
           <Link to="/books">
-            <li className="header__nav-item">Bookshelf</li>
+            <li className="header__nav-item">Books</li>
           </Link>
           <Link to="/tracker">
             <li className="header__nav-item">Tracker</li>

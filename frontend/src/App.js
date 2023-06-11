@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import "./styles/App.scss";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
+import BooksPage from "./pages/BooksPage/BooksPage";
 
 const theme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ function App() {
       
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/books" element={<BooksPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
