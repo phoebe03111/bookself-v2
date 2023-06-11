@@ -1,9 +1,11 @@
 import express from "express";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 dotenv.config();
 const router = express.Router();
-import { getBooks } from "../controllers/bookControllers.js";
+import { getBookById, getBooks } from "../controllers/bookControllers.js";
 
 router.route("/").get(getBooks);
+
+router.route("/:id").get(getBookById);
 
 export default router;
