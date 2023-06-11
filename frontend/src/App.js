@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
 import "./styles/App.scss";
 import HomePage from "./pages/HomePage/HomePage";
+import Header from "./components/Header/Header";
 
 const theme = createTheme({
   palette: {
@@ -18,6 +19,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+      <Header />
+      
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
