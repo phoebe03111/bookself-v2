@@ -1,3 +1,5 @@
+import LoginForm from "../../components/LoginForm/LoginForm";
+import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import "./HomePage.scss";
 
 function HomePage() {
@@ -11,6 +13,7 @@ function HomePage() {
       </div>
 
       {/* <LoginForm /> */}
+      <RegisterForm />
     </main>
   );
 }

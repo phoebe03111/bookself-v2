@@ -1,0 +1,39 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+
+.auth {
+  @include column;
+  padding: 2rem;
+  background-color: $color-beige;
+  gap: 2rem;
+
+  @include tablet {
+    width: 25vw;
+  }
+
+  &__title {
+    letter-spacing: 2px;
+  }
+}
+
+.form {
+  @include column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+
+  &-group {
+    width: 100%;
+  }
+}
+
+.redirect {
+  line-height: 2rem;
+  letter-spacing: 1px;
+}
+
+.wrong-msg {
+  color: rgb(211, 47, 47);
+}
