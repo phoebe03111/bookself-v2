@@ -1,9 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
-import "./styles/App.scss";
-import HomePage from "./pages/HomePage/HomePage";
+import { Outlet } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material";
 import Header from "./components/Header/Header";
-import BooksPage from "./pages/BooksPage/BooksPage";
+import "./styles/App.scss";
 
 const theme = createTheme({
   palette: {
@@ -19,14 +17,8 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
       <Header />
-      
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/books" element={<BooksPage />} />
-        </Routes>
-      </Router>
+      <Outlet />
     </ThemeProvider>
   );
 }
