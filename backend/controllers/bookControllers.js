@@ -23,4 +23,13 @@ const getBookById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getBooks, getBookById };
+// @desc    Add a book
+// @route   POST /api/books
+// @access  Private
+const addBook = asyncHandler(async (req, res) => {
+  const createdBook = await Book.create(req.body)
+
+  res.status(201).json(createdBook);
+});
+
+export { getBooks, getBookById, addBook };

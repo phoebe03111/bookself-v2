@@ -12,17 +12,6 @@ function Book({ book }) {
           alt={book.name}
         />
       </Link>
-      {/* <a href={book.volumeInfo.infoLink} target="_blank" rel="noreferrer">
-        <img
-          className="book__book"
-          src={
-            book?.volumeInfo?.imageLinks?.thumbnail
-              ? book.volumeInfo.imageLinks.thumbnail
-              : placeholder
-          }
-          alt={book.name}
-        />
-      </a> */}
     </div>
   );
 }

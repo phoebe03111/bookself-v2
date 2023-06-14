@@ -11,6 +11,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import HomePage from "./pages/HomePage/HomePage";
 import BooksPage from "./pages/BooksPage/BooksPage";
+import AddBookPage from "./pages/AddBookPage/AddBookPage";
 import store from "./store";
 
 const router = createBrowserRouter(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<HomePage />} />
       <Route path="/books" element={<BooksPage />} />
       {/* <Route path="/books/:bookId" element={<BookDetailPage />} /> */}
+      <Route path="/books/add/:category" element={<AddBookPage />} />
     </Route>
   )
 );

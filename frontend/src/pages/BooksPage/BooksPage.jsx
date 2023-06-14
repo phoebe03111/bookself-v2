@@ -11,11 +11,17 @@ import Message from "../../components/Message/Message";
 import { useGetBooksQuery } from "../../features/bookApiSlice";
 
 import "./BooksPage.scss";
+import { useNavigate } from "react-router-dom";
 
 function BooksPage() {
   const { data: books, isLoading, error } = useGetBooksQuery();
 
-  const handleClick = (e) => {};
+  const navigate = useNavigate()
+
+  const handleClick = (e) => {
+    const category = e.target.name;
+    navigate(`/books/add/${category}`);
+  };
 
   return (
     <main className="books">
