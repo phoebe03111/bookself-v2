@@ -27,9 +27,39 @@ const getBookById = asyncHandler(async (req, res) => {
 // @route   POST /api/books
 // @access  Private
 const addBook = asyncHandler(async (req, res) => {
-  const createdBook = await Book.create(req.body)
+  const createdBook = await Book.create(req.body);
 
   res.status(201).json(createdBook);
 });
 
-export { getBooks, getBookById, addBook };
+// @desc    Update a book
+// @route   PUT /api/books/:id
+// @access  Private
+const updateBook = asyncHandler(async (req, res) => {
+  const book = await Book.findById(req.params.id);
+
+  if (book) {
+    const updatedBook = {};
+    res.status(201).json(updatedBook);
+  } else {
+    res.status(404);
+    throw new Error("Book not found");
+  }
+});
+
+// @desc    Delete a book
+// @route   DELETE /api/books/:id
+// @access  Private
+const deleteBook = asyncHandler(async (req, res) => {
+  const book = await Book.findById(req.params.id);
+
+  if (book) {
+    await Book.deleteOne({ _id: book._id });
+    res.status(201).json({ message: "Book deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Book not found");
+  }
+});
+
+export { getBooks, getBookById, addBook, updateBook, deleteBook };
