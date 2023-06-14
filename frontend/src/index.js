@@ -13,13 +13,14 @@ import HomePage from "./pages/HomePage/HomePage";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AddBookPage from "./pages/AddBookPage/AddBookPage";
 import store from "./store";
+import BookDetailPage from "./pages/BookDetailPage/BookDetailPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomePage />} />
       <Route path="/books" element={<BooksPage />} />
-      {/* <Route path="/books/:bookId" element={<BookDetailPage />} /> */}
+      <Route path="/books/:bookId" element={<BookDetailPage />} />
       <Route path="/books/add/:category" element={<AddBookPage />} />
     </Route>
   )
