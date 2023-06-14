@@ -10,6 +10,9 @@ import { BsTrash3, BsArrowLeftCircleFill } from "react-icons/bs";
 // import BookRating from "../../components/BookRating/BookRating";
 import "./BookDetailPage.scss";
 import { useGetBookByIdQuery } from "../../features/bookApiSlice";
+import BookRating from "../../components/BookRating/BookRating";
+import BookStatus from "../../components/BookStatus/BookStatus";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal/ConfirmDeleteModal";
 
 function BookDetailPage() {
   const { bookId } = useParams();
@@ -63,17 +66,18 @@ function BookDetailPage() {
               <span className="book__info-title">Published</span>:{" "}
               {publishedDate}
             </p>
-            {/* <BookStatus
-              statusValue={statusValue}
-              setStatusValue={setStatusValue}
-              isEditing={isEditing}
-            /> */}
-            <div>
-              <p className="book__info-item">
-                <span className="book__info-title">Rating</span>:
-              </p>
-              {/* <BookRating rating={ratingValue} /> */}
-            </div>
+            <p className="book__info-item">
+              <span className="book__info-title">Status</span>:
+              <BookStatus
+                statusValue={status}
+                setStatusValue={setStatusValue}
+                isEditing={isEditing}
+              />
+            </p>
+            <p className="book__info-item">
+              <span className="book__info-title">Rating</span>:
+            </p>
+            <BookRating rating={rating} isEditing={isEditing} />
           </div>
         </div>
 
@@ -142,12 +146,12 @@ function BookDetailPage() {
         </div>
       </div>
 
-      {/* {openDeleteModal && (
+      {openDeleteModal && (
         <ConfirmDeleteModal
           bookId={bookId}
           onDelete={(open) => setOpenDeleteModal(open)}
         />
-      )} */}
+      )}
     </main>
   );
 }
