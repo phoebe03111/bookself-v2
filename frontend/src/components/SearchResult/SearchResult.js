@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useSnackbar } from "notistack";
 import Loader from "../Loader/Loader";
 import placeholder from "../../assets/images/book-placeholder.jpeg";
 import { useAddBookMutation } from "../../features/bookApiSlice";
@@ -7,6 +8,11 @@ import "./SearchResult.scss";
 
 function SearchResult({ result }) {
   const { category } = useParams();
+
+  const [addBook, { isLoading }] = useAddBookMutation();
+  const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   let statusVal;
   if (category === "addCurrent") {
@@ -21,12 +27,9 @@ function SearchResult({ result }) {
   const { title, authors, publishedDate, imageLinks, description } =
     result.volumeInfo;
 
-  const [addBook, { isLoading }] = useAddBookMutation();
-  const navigate = useNavigate();
-
-  const handlePlus = () => {
+  const handlePlus = async () => {
     const bookData = {
-      // user
+      user: "642c5c92e1c7e191d428e869",
       title,
       authors,
       publishedDate,
@@ -34,12 +37,13 @@ function SearchResult({ result }) {
       description,
       status: statusVal,
       rating: 0,
-      quotes: "N/A",
+      quotes: [],
       review: "N/A",
       googleId: id,
     };
 
-    addBook(bookData);
+    await addBook(bookData);
+    enqueueSnackbar("Book added!", { variant: "success" });
     navigate("/books");
   };
 

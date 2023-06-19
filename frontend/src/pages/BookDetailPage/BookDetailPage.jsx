@@ -1,45 +1,84 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, ButtonGroup } from "@mui/material";
-import { AiFillEdit } from "react-icons/ai";
+import { useParams, Link } from "react-router-dom";
+import { Alert, Button, ButtonGroup } from "@mui/material";
+import { AiFillEdit, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash3, BsArrowLeftCircleFill } from "react-icons/bs";
-// import ConfirmDeleteModal from "../../components/ConfirmDeleteModal/ConfirmDeleteModal";
-// import Quote from "../../components/Quote/Quote";
-// import BookStatus from "../../components/BookStatus/BookStatus";
-// import BookRating from "../../components/BookRating/BookRating";
-import "./BookDetailPage.scss";
-import { useGetBookByIdQuery } from "../../features/bookApiSlice";
+import { useSnackbar } from "notistack";
+import {
+  useGetBookByIdQuery,
+  useUpdateBookMutation,
+} from "../../features/bookApiSlice";
+import Loader from "../../components/Loader/Loader";
 import BookRating from "../../components/BookRating/BookRating";
 import BookStatus from "../../components/BookStatus/BookStatus";
+import BookQuotes from "../../components/BookQuotes/BookQuotes";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal/ConfirmDeleteModal";
+import "./BookDetailPage.scss";
 
 function BookDetailPage() {
   const { bookId } = useParams();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [statusValue, setStatusValue] = useState("");
-  const [ratingValue, setRatingValue] = useState(0);
-  const [reviewInput, setReviewInput] = useState("N/A");
-  const [quotesInput, setQuotesInput] = useState("N/A");
-
-  const { data: book, isLoading } = useGetBookByIdQuery(bookId);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  const [status, setStatus] = useState("");
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState("N/A");
+  const [quotes, setQuotes] = useState([]);
+  const [message, setMessage] = useState({
+    open: false,
+    text: "",
+    severity: "info",
+  });
 
   const {
-    image,
-    title,
-    authors,
-    publishedDate,
-    quotes,
-    rating,
-    review,
-    status,
-  } = book && book;
+    data: book,
+    isLoading,
+    error: errorLoading,
+    refetch,
+  } = useGetBookByIdQuery(bookId);
+  const [updateBook] = useUpdateBookMutation();
+
+  useEffect(() => {
+    if (book) {
+      setStatus(book.status);
+      setRating(book.rating);
+      setReview(book.review);
+      setQuotes(book.quotes);
+    }
+  }, [book]);
+
+  const { image, title, authors, publishedDate } = !isLoading && book;
+
+  const handleSave = async () => {
+    const updatedBookInfo = {
+      bookId,
+      image,
+      title,
+      authors,
+      publishedDate,
+      status,
+      rating,
+      review,
+      quotes,
+    };
+    const result = await updateBook(updatedBookInfo);
+
+    if (result.error) {
+      console.log(result.error.error);
+      enqueueSnackbar("Error updating the book", { variant: "error" });
+    } else {
+      enqueueSnackbar("Book udated!", { variant: "success" });
+      setIsEditing(false);
+      refetch();
+    }
+  };
+
+  const handleAddQuote = () => {
+    const newQuoteValues = [...quotes, ""];
+    setQuotes(newQuoteValues);
+  };
 
   return (
     <main className="book-detail">
@@ -47,109 +86,124 @@ function BookDetailPage() {
         <BsArrowLeftCircleFill size={23} /> Back
       </Link>
 
-      <div className="book-detail__container">
-        <div className="book__top">
-          <div>
-            <img className="book__image" src={image} alt={title} />
-            <div className="book__image-bg"></div>
+      {isLoading ? (
+        <Loader />
+      ) : errorLoading ? (
+        <Alert severity="error">{errorLoading}</Alert>
+      ) : (
+        <div className="book-detail__container">
+          <div className="book__top">
+            <div>
+              <img className="book__image" src={image} alt={title} />
+              <div className="book__image-bg"></div>
+            </div>
+
+            <div className="book__info">
+              <div className="book__info-item">
+                <span className="book__info-title">Title</span>: {title}
+              </div>
+              <div className="book__info-item">
+                <span className="book__info-title">Authors</span>:{" "}
+                {authors && authors.join(",")}
+              </div>
+              <div className="book__info-item">
+                <span className="book__info-title">Published</span>:{" "}
+                {publishedDate}
+              </div>
+              <div className="book__info-item">
+                <span className="book__info-title">Status</span>:
+                <BookStatus
+                  status={status}
+                  setStatus={setStatus}
+                  isEditing={isEditing}
+                />
+              </div>
+              <div className="book__info-item">
+                <span className="book__info-title">Rating</span>:
+                <BookRating
+                  rating={rating}
+                  setRating={setRating}
+                  isEditing={isEditing}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="book__info">
-            <p className="book__info-item">
-              <span className="book__info-title">Title</span>: {title}
-            </p>
-            <p className="book__info-item">
-              <span className="book__info-title">Authors</span>:{" "}
-              {authors && authors.join(",")}
-            </p>
-            <p className="book__info-item">
-              <span className="book__info-title">Published</span>:{" "}
-              {publishedDate}
-            </p>
-            <p className="book__info-item">
-              <span className="book__info-title">Status</span>:
-              <BookStatus
-                statusValue={status}
-                setStatusValue={setStatusValue}
+          <div className="book__bottom">
+            <div>
+              <p className="book__info-title">My Review</p>
+              {isEditing ? (
+                <textarea
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                  className="book__textarea"
+                />
+              ) : (
+                <p className="book__review">{review}</p>
+              )}
+            </div>
+
+            <div>
+              <div className="book__quotes-section">
+                <p className="book__info-title">Favorite quotes</p>
+                {isEditing && (
+                  <AiOutlinePlusCircle
+                    size={25}
+                    className="add-icon"
+                    onClick={handleAddQuote}
+                  />
+                )}
+              </div>
+              <BookQuotes
+                quotes={quotes}
+                setQuotes={setQuotes}
                 isEditing={isEditing}
               />
-            </p>
-            <p className="book__info-item">
-              <span className="book__info-title">Rating</span>:
-            </p>
-            <BookRating rating={rating} isEditing={isEditing} />
+            </div>
+
+            <div className="button-group">
+              {isEditing ? (
+                <ButtonGroup variant="contained">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<AiFillEdit />}
+                    onClick={handleSave}
+                  >
+                    save
+                  </Button>
+                  <Button color="secondary" onClick={() => setIsEditing(false)}>
+                    cancel
+                  </Button>
+                </ButtonGroup>
+              ) : (
+                <ButtonGroup variant="contained">
+                  <Button
+                    color="primary"
+                    endIcon={<AiFillEdit />}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    edit
+                  </Button>
+                  <Button
+                    color="secondary"
+                    endIcon={<BsTrash3 size={20} />}
+                    onClick={() => setOpenDeleteModal(true)}
+                  >
+                    remove
+                  </Button>
+                </ButtonGroup>
+              )}
+            </div>
           </div>
         </div>
-
-        <div className="book__bottom">
-          <div>
-            <p className="book__info-title">My Review</p>
-            {isEditing ? (
-              <textarea
-                value={reviewInput}
-                onChange={(e) => setReviewInput(e.target.value)}
-                className="book__textarea"
-              />
-            ) : (
-              <p className="book__review">{review}</p>
-            )}
-          </div>
-
-          <div>
-            <p className="book__info-title">Favorite quotes</p>
-            {isEditing ? (
-              <textarea
-                value={quotesInput}
-                onChange={(e) => setQuotesInput(e.target.value)}
-                className="book__textarea--quotes"
-              />
-            ) : (
-              <ul>{/* <Quote quotes={quotes} /> */}</ul>
-            )}
-          </div>
-
-          <div className="button-group">
-            {isEditing ? (
-              <ButtonGroup variant="contained">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<AiFillEdit />}
-                  onClick={() => {}}
-                >
-                  save
-                </Button>
-                <Button color="secondary" onClick={() => setIsEditing(false)}>
-                  cancel
-                </Button>
-              </ButtonGroup>
-            ) : (
-              <ButtonGroup variant="contained">
-                <Button
-                  color="primary"
-                  endIcon={<AiFillEdit />}
-                  onClick={() => setIsEditing(true)}
-                  // onClick={() => navigate(`/books/${bookId}/edit`)}
-                >
-                  edit
-                </Button>
-                <Button
-                  color="secondary"
-                  endIcon={<BsTrash3 size={20} />}
-                  onClick={() => setOpenDeleteModal(true)}
-                >
-                  remove
-                </Button>
-              </ButtonGroup>
-            )}
-          </div>
-        </div>
-      </div>
+      )}
 
       {openDeleteModal && (
         <ConfirmDeleteModal
           bookId={bookId}
           onDelete={(open) => setOpenDeleteModal(open)}
+          setMessage={setMessage}
         />
       )}
     </main>

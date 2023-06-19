@@ -3,15 +3,15 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
-function BookStatus({ statusValue, setStatusValue, isEditing }) {
+function BookStatus({ status, setStatus, isEditing }) {
   return (
     <div>
       <FormControl>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          value={statusValue}
+          value={status}
           onChange={(e) => {
-            setStatusValue(e.target.value)
+            setStatus(e.target.value)
           }}
           name="radio-buttons-group"
           row

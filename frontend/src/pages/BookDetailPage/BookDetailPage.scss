@@ -48,7 +48,6 @@
 
     @include tablet {
       flex-direction: row;
-      margin-bottom: 2rem;
     }
   }
 
@@ -88,15 +87,39 @@
     margin: 0.5rem 0;
   }
 
-  &__quote {
-    line-height: 2;
-    padding: 0.3rem 0;
-    border-bottom: 1px dashed gray;
+  &__textarea {
+    width: 100%;
+    min-width: 10rem;
+    height: 10rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none;
+    font-family: inherit;
+    border-radius: 4px;
+    color: inherit;
+    border: none;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+    @include tablet {
+      min-width: 30rem;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__quotes-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
 .button-group {
-  margin: 0 auto;
+  margin: 0rem auto;
 
   @include tablet {
     position: absolute;

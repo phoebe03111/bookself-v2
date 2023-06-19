@@ -1,22 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import {
   BsFillBookmarksFill,
   BsFillBookmarkPlusFill,
   BsFillBookmarkCheckFill,
 } from "react-icons/bs";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import Book from "../../components/Book/Book";
 import Loader from "../../components/Loader/Loader";
-import Message from "../../components/Message/Message";
 import { useGetBooksQuery } from "../../features/bookApiSlice";
-
 import "./BooksPage.scss";
-import { useNavigate } from "react-router-dom";
 
 function BooksPage() {
   const { data: books, isLoading, error } = useGetBooksQuery();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     const category = e.target.name;
@@ -28,9 +26,7 @@ function BooksPage() {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.error}
-        </Message>
+        <Alert severity="danger">{error}</Alert>
       ) : (
         <>
           <section className="section currently-reading">

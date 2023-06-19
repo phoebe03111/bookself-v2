@@ -1,0 +1,47 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+
+.book {
+  &__quotes {
+    @include center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__input {
+    width: 100%;
+    min-width: 10rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none;
+    font-family: inherit;
+    border-radius: 4px;
+    color: inherit;
+    border: none;
+	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    
+    @include tablet {
+      min-width: 30rem;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.add-icon {
+  &:hover {
+    cursor: pointer;
+    color: green;
+  }
+}
+
+.remove-icon {
+  &:hover {
+    cursor: pointer;
+    color: darkred;
+  }
+}

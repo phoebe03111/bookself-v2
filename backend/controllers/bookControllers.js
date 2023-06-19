@@ -36,10 +36,29 @@ const addBook = asyncHandler(async (req, res) => {
 // @route   PUT /api/books/:id
 // @access  Private
 const updateBook = asyncHandler(async (req, res) => {
+  const {
+    image,
+    title,
+    authors,
+    publishedDate,
+    status,
+    rating,
+    review,
+    quotes,
+  } = req.body;
   const book = await Book.findById(req.params.id);
 
   if (book) {
-    const updatedBook = {};
+    book.image = image;
+    book.title = title;
+    book.authors = authors;
+    book.publishedDate = publishedDate;
+    book.status = status;
+    book.rating = rating;
+    book.review = review;
+    book.quotes = quotes;
+
+    const updatedBook = await book.save();
     res.status(201).json(updatedBook);
   } else {
     res.status(404);
