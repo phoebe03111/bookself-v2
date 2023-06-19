@@ -8,12 +8,14 @@ export const bookSlice = apiSlice.injectEndpoints({
         url: BOOKS_URL,
       }),
       providesTags: ["Books"],
+      keepUnusedDataFor: 5,
     }),
 
     getBookById: builder.query({
       query: (bookId) => ({
         url: `${BOOKS_URL}/${bookId}`,
       }),
+      keepUnusedDataFor: 5,
     }),
 
     addBook: builder.mutation({
@@ -22,6 +24,7 @@ export const bookSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Book"], // Stop it from being cached
     }),
 
     updateBook: builder.mutation({
@@ -38,6 +41,7 @@ export const bookSlice = apiSlice.injectEndpoints({
         url: `${BOOKS_URL}/${bookId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Book"],
     }),
   }),
 });

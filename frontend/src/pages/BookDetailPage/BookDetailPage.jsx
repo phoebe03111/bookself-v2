@@ -26,11 +26,6 @@ function BookDetailPage() {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("N/A");
   const [quotes, setQuotes] = useState([]);
-  const [message, setMessage] = useState({
-    open: false,
-    text: "",
-    severity: "info",
-  });
 
   const {
     data: book,
@@ -203,7 +198,6 @@ function BookDetailPage() {
         <ConfirmDeleteModal
           bookId={bookId}
           onDelete={(open) => setOpenDeleteModal(open)}
-          setMessage={setMessage}
         />
       )}
     </main>
