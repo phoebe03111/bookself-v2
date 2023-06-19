@@ -9,11 +9,12 @@ import {
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
+import store from "./store";
 import HomePage from "./pages/HomePage/HomePage";
 import BooksPage from "./pages/BooksPage/BooksPage";
 import AddBookPage from "./pages/AddBookPage/AddBookPage";
-import store from "./store";
 import BookDetailPage from "./pages/BookDetailPage/BookDetailPage";
+import TrackerPage from "./pages/TrackerPage/TrackerPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route path="/books" element={<BooksPage />} />
       <Route path="/books/:bookId" element={<BookDetailPage />} />
       <Route path="/books/add/:category" element={<AddBookPage />} />
+      <Route path="/tracker" element={<TrackerPage />} />
     </Route>
   )
 );
@@ -29,9 +31,9 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 

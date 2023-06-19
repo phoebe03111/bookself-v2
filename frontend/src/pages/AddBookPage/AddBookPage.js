@@ -40,7 +40,7 @@ function AddBookPage() {
 
         <div className="add-book__results">
           {loading && <Loader />}
-          
+
           {results.length !== 0 &&
             results.map((result) => {
               return <SearchResult key={result.id} result={result} />;
@@ -48,13 +48,13 @@ function AddBookPage() {
         </div>
       </div>
 
-      <div className="add-book__form">
+      {/* <div className="add-book__form">
         <h2 className="add-book__heading">
           Cannot find your book? Add it here.
         </h2>
 
-        {/* <AddBookForm /> */}
-      </div>
+        <AddBookForm /> 
+      </div> */}
     </main>
   );
 }
