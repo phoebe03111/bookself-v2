@@ -1,21 +1,53 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import { TextField, Button } from "@mui/material";
+import { useRegisterMutation } from "../../features/userApiSlice";
 
-const handleRegister = (e) => {
-  e.preventDefault();
-};
+const RegisterForm = ({ setIsRegistering }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-const RegisterForm = () => {
+  const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [register] = useRegisterMutation();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      enqueueSnackbar("Passwords do not match", { variant: "warning" });
+      return;
+    } else {
+      try {
+        await register({ name, email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+        navigate("/books");
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar("Error registering user", { variant: "error" });
+      }
+    }
+  };
+
   return (
     <div className="auth">
       <h1 className="auth__title">Sign up</h1>
+
       <form className="form" onSubmit={handleRegister}>
         <div className="form-group">
           <TextField
             id="name"
             label="Username"
+            type="text"
             variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
 
@@ -23,9 +55,12 @@ const RegisterForm = () => {
           <TextField
             id="email"
             label="Email"
+            type="email"
             variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
 
@@ -36,7 +71,9 @@ const RegisterForm = () => {
             type="password"
             variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
 
@@ -47,17 +84,23 @@ const RegisterForm = () => {
             type="password"
             variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
         </div>
 
         <Button type="submit" color="primary" variant="contained">
-          Signup
+          Submit
         </Button>
       </form>
       <p className="redirect">
         Already have an account?{" "}
-        <Button color="primary" variant="contained" onClick={() => {}}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => setIsRegistering(false)}
+        >
           Login
         </Button>
       </p>

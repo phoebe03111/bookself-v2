@@ -1,8 +1,10 @@
+import { useState } from "react";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import "./HomePage.scss";
 
 function HomePage() {
+  const [isRegistering, setIsRegistering] = useState(false);
 
   return (
     <main className="home">
@@ -12,8 +14,11 @@ function HomePage() {
         </h1>
       </div>
 
-      {/* <LoginForm /> */}
-      <RegisterForm />
+      {isRegistering ? (
+        <RegisterForm setIsRegistering={setIsRegistering} />
+      ) : (
+        <LoginForm setIsRegistering={setIsRegistering} />
+      )}
     </main>
   );
 }

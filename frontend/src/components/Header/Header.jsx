@@ -16,6 +16,16 @@ function Header() {
     setshowMenu(!showMenu);
   };
 
+  const handleLogout = async () => {
+    try {
+      // await logoutApiCall().unwrap();
+      // dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <header className="header">
       {/* Logo */}
@@ -51,10 +61,7 @@ function Header() {
             type="submit"
             color="success"
             variant="contained"
-            onClick={() => {
-            //   sessionStorage.removeItem("token");
-              navigate("/");
-            }}
+            onClick={handleLogout}
           >
             Logout
           </Button>

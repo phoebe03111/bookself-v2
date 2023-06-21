@@ -1,5 +1,5 @@
-import { BOOKS_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
+import { BOOKS_URL } from "../constants";
 
 export const bookSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

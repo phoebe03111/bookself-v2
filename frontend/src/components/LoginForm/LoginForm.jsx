@@ -1,9 +1,30 @@
+import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import "./LoginForm.scss";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { useLoginMutation } from "../../features/userApiSlice";
 
-const LoginForm = () => {
-  const handleLogin = (e) => {
+const LoginForm = ({ setIsRegistering }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [login] = useLoginMutation();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+
+    try {
+      await login({ email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+      navigate("/books");
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("Incorrect email or password", { variant: "error" });
+    }
   };
 
   return (
@@ -13,21 +34,24 @@ const LoginForm = () => {
       <form className="form" onSubmit={handleLogin}>
         <div className="form-group">
           <TextField
-            id="outlined-basic"
-            label="Username"
+            id="email"
+            label="Email"
+            type="email"
             variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="form-group">
           <TextField
-            id="outlined-basic"
+            id="password"
             label="Password"
-            variant="outlined"
             type="password"
+            variant="outlined"
             fullWidth
-            autoComplete="off"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -37,7 +61,11 @@ const LoginForm = () => {
       </form>
       <p className="redirect">
         Don't have an account yet?{" "}
-        <Button color="primary" variant="contained">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => setIsRegistering(true)}
+        >
           Signup
         </Button>
       </p>
