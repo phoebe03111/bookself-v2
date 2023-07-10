@@ -8,23 +8,35 @@ import FinishedBooks from "../../components/FinishedBooks/FinishedBooks";
 import { useGetBooksQuery } from "../../features/bookApiSlice";
 import "./TrackerPage.scss";
 import { Alert } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useUpdateGoalMutation } from "../../features/userApiSlice";
+import { updateUserGoal } from "../../features/authSlice";
 
 function TrackerPage() {
-  const [goal, setGoal] = useState(1);
+  const { userInfo } = useSelector((state) => state.user);
+  const [goal, setGoal] = useState(userInfo ? userInfo?.goal : 1);
 
   const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const { data: books, isLoading, error } = useGetBooksQuery();
+
+  const [updateGoal] = useUpdateGoalMutation();
 
   const handleClick = (e) => {
     const category = e.target.name;
     navigate(`/books/add/${category}`);
   };
 
+  const handleGoal = async (e) => {
+    setGoal(e.target.value);
+    const res = await updateGoal({ userId: userInfo._id, goal: e.target.value }).unwrap();
+    dispatch(updateUserGoal({ ...res }));
+  };
+
   // Setup progress bar percantage
-  let finishedAmount = books && books.filter((book) => book.status === 'finished-reading').length;
+  let finishedAmount =
+    books && books.filter((book) => book.status === "finished-reading").length;
   let percentage = Math.floor((finishedAmount / goal) * 100);
 
   return (
@@ -46,7 +58,7 @@ function TrackerPage() {
             <div className="tracker__text">
               <img src={bookImg} alt="book" className="tracker__img" />
               <h1 className="tracker__font">
-                {userInfo.name}'s reading goal in {new Date().getFullYear()}:{" "}
+                {userInfo?.name}'s reading goal in {new Date().getFullYear()}:{" "}
                 <TextField
                   type="number"
                   InputProps={{ inputProps: { min: finishedAmount, max: 100 } }}
@@ -55,20 +67,7 @@ function TrackerPage() {
                   variant="outlined"
                   size="small"
                   value={goal}
-                  onChange={(e) => {
-                    setGoal(e.target.value);
-
-                    // const token = sessionStorage.getItem("token");
-                    // axios.put(
-                    //   `https://bookself-server.herokuapp.com/users`,
-                    //   {
-                    //     goal: e.target.value,
-                    //   },
-                    //   {
-                    //     headers: { Authorization: `Bearer ${token}` },
-                    //   }
-                    // );
-                  }}
+                  onChange={(e) => handleGoal(e)}
                 />{" "}
                 books
               </h1>

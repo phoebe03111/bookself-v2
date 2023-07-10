@@ -20,6 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    goal: 1
   });
 
   if (user) {
@@ -30,6 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      goal: user.goal
     });
   } else {
     res.status(400);
@@ -62,6 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      goal: user.goal
     });
   } else {
     res.status(401);
@@ -81,4 +84,26 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-export { registerUser, loginUser, logoutUser };
+// @desc    Update user goal
+// @route   PUT /api/users/:id
+// @access  Private
+const updateGoal = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.goal = Number(req.body.goal);
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      goal: updatedUser.goal,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+export { registerUser, loginUser, logoutUser, updateGoal };
