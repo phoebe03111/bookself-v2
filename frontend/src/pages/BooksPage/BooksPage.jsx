@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsFillBookmarksFill, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Alert, Button } from "@mui/material";
@@ -23,12 +23,22 @@ function BooksPage() {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Alert severity="danger">{error}</Alert>
+        <Alert severity="error">
+          Please{" "}
+          <Link to="/" style={{ textDecoration: "underline" }}>
+            log in
+          </Link>{" "}
+          first
+        </Alert>
       ) : (
         <>
-          <section className="section">
-            {books.length <= 0 && <p>You have not added any books</p>}
+          {books.length === 0 && (
+            <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+              Start adding your books!
+            </p>
+          )}
 
+          <section className="section">
             <div className="section__topic">
               <h2 className="section__title">
                 <BsFillBookmarksFill size={30} /> Currently Reading

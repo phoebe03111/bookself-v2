@@ -1,25 +1,30 @@
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import "./LoginForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../features/userApiSlice";
+import { setCredentials } from "../../features/authSlice";
+import Loader from "../../components/Loader/Loader";
+import "./LoginForm.scss";
 
 const LoginForm = ({ setIsRegistering }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      await login({ email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+      const res = await login({ email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+      dispatch(setCredentials({ ...res }));
       navigate("/books");
     } catch (error) {
       console.log(error);
@@ -29,7 +34,7 @@ const LoginForm = ({ setIsRegistering }) => {
 
   return (
     <div className="auth">
-      <h1 className="auth__title">Login</h1>
+      <h1 className="auth__title">Log In</h1>
 
       <form className="form" onSubmit={handleLogin}>
         <div className="form-group">
@@ -54,6 +59,8 @@ const LoginForm = ({ setIsRegistering }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
+        {isLoading && <Loader />}
 
         <Button type="submit" color="primary" variant="contained">
           Login

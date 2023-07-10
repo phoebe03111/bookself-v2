@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { TextField, Button } from "@mui/material";
 import { useRegisterMutation } from "../../features/userApiSlice";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/authSlice";
 
 const RegisterForm = ({ setIsRegistering }) => {
   const [name, setName] = useState("");
@@ -11,6 +13,7 @@ const RegisterForm = ({ setIsRegistering }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -24,7 +27,8 @@ const RegisterForm = ({ setIsRegistering }) => {
       return;
     } else {
       try {
-        await register({ name, email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+        const res = await register({ name, email, password }).unwrap(); // unwrap/extract the resolved value from a promise
+        dispatch(setCredentials({ ...res }));
         navigate("/books");
       } catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import bookImg from "../../assets/images/logo-book.png";
 import Loader from "../../components/Loader/Loader";
@@ -8,25 +8,15 @@ import FinishedBooks from "../../components/FinishedBooks/FinishedBooks";
 import { useGetBooksQuery } from "../../features/bookApiSlice";
 import "./TrackerPage.scss";
 import { Alert } from "@mui/material";
+import { useSelector } from "react-redux";
 
 function TrackerPage() {
-  const [goal, setGoal] = useState(10);
+  const [goal, setGoal] = useState(1);
+
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
 
   const { data: books, isLoading, error } = useGetBooksQuery();
-
-  // Get user's initial goal from database
-  useEffect(() => {
-    // const token = sessionStorage.getItem("token");
-    // axios
-    //   .get(`https://bookself-server.herokuapp.com/goal`, {
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   })
-    //   .then((res) => {
-    //     setGoal(res.data[0].goal);
-    //   })
-    //   .catch((err) => console.log(err));
-  }, []);
 
   const handleClick = (e) => {
     const category = e.target.name;
@@ -42,14 +32,21 @@ function TrackerPage() {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Alert severity="danger">{error}</Alert>
+        <Alert severity="error">
+          {" "}
+          Please{" "}
+          <Link to="/" style={{ textDecoration: "underline" }}>
+            log in
+          </Link>{" "}
+          first
+        </Alert>
       ) : (
         <>
           <div className="tracker__goal">
             <div className="tracker__text">
               <img src={bookImg} alt="book" className="tracker__img" />
               <h1 className="tracker__font">
-                {new Date().getFullYear()} Reading Goal: I will read{" "}
+                {userInfo.name}'s reading goal in {new Date().getFullYear()}:{" "}
                 <TextField
                   type="number"
                   InputProps={{ inputProps: { min: finishedAmount, max: 100 } }}

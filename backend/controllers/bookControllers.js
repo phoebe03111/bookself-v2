@@ -1,11 +1,11 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Book from "../models/bookModel.js";
 
-// @desc    Fetch all books
+// @desc    Fetch all books of a user
 // @route   GET /api/books
 // @access  Private
 const getBooks = asyncHandler(async (req, res) => {
-  const books = await Book.find({});
+  const books = await Book.find({ user: req.user._id });
   res.status(200).json(books);
 });
 

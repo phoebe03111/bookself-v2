@@ -5,12 +5,15 @@ import Loader from "../Loader/Loader";
 import placeholder from "../../assets/images/book-placeholder.jpeg";
 import { useAddBookMutation } from "../../features/bookApiSlice";
 import "./SearchResult.scss";
+import { useSelector } from "react-redux";
 
 function SearchResult({ result }) {
   const { category } = useParams();
 
   const [addBook, { isLoading }] = useAddBookMutation();
   const navigate = useNavigate();
+
+  const { userInfo } = useSelector((state) => state.user);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -29,7 +32,7 @@ function SearchResult({ result }) {
 
   const handlePlus = async () => {
     const bookData = {
-      user: "642c5c92e1c7e191d428e869",
+      user: userInfo._id,
       title,
       authors,
       publishedDate,

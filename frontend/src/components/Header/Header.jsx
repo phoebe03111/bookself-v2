@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import logoImg from "../../assets/images/logo.png";
 import menuIcon from "../../assets/images/icons/menu-bars.svg";
 import menuCloseIcon from "../../assets/images/icons/menu-close.svg";
 import NavModal from "../NavModal/NavModal";
-import { Button } from "@mui/material";
+import { useLogoutMutation } from "../../features/userApiSlice";
+import { logout } from "../../features/authSlice";
 import "./Header.scss";
 
 function Header() {
   const [showMenu, setshowMenu] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+
+  const [logoutApiCall] = useLogoutMutation();
 
   const handleToggle = () => {
     setshowMenu(!showMenu);
@@ -18,13 +25,13 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      // await logoutApiCall().unwrap();
-      // dispatch(logout());
+      await logoutApiCall().unwrap();
+      dispatch(logout());
       navigate("/");
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <header className="header">
@@ -57,14 +64,16 @@ function Header() {
           <Link to="/tracker">
             <li className="header__nav-item">Tracker</li>
           </Link>
-          <Button
-            type="submit"
-            color="success"
-            variant="contained"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+          {userInfo && (
+            <Button
+              type="submit"
+              color="success"
+              variant="contained"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          )}
         </ul>
       </nav>
     </header>
