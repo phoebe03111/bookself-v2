@@ -24,7 +24,7 @@ export const bookSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Book"], // Stop it from being cached
+      invalidatesTags: ["Books"], // Stop it from being cached
     }),
 
     updateBook: builder.mutation({
@@ -41,7 +41,7 @@ export const bookSlice = apiSlice.injectEndpoints({
         url: `${BOOKS_URL}/${bookId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Book"],
+      invalidatesTags: ["Books"],
     }),
   }),
 });
