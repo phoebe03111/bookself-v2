@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e73c9e0b.css",
+    "main.js": "/static/js/main.eb533657.js",
+    "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/hero.jpeg": "/static/media/hero.f5609d96db649e41810a.jpeg",
+    "static/media/CormorantGaramond-SemiBold.ttf": "/static/media/CormorantGaramond-SemiBold.b2e099961ec65e0ee335.ttf",
+    "static/media/CormorantGaramond-Regular.ttf": "/static/media/CormorantGaramond-Regular.e1f2c50eda29fd294be2.ttf",
+    "static/media/CormorantGaramond-Bold.ttf": "/static/media/CormorantGaramond-Bold.9f7b94f23ddc828f9376.ttf",
+    "static/media/CormorantGaramond-Italic.ttf": "/static/media/CormorantGaramond-Italic.b8b9a9dd5a21ff5896ab.ttf",
+    "static/media/CormorantGaramond-SemiBold.woff": "/static/media/CormorantGaramond-SemiBold.ce37b429768c6782703f.woff",
+    "static/media/CormorantGaramond-Regular.woff": "/static/media/CormorantGaramond-Regular.62b44a1aa8c742f9910e.woff",
+    "static/media/CormorantGaramond-Bold.woff": "/static/media/CormorantGaramond-Bold.3910cc93393262c1d050.woff",
+    "static/media/CormorantGaramond-Italic.woff": "/static/media/CormorantGaramond-Italic.98137846f2ffc0f92fc9.woff",
+    "static/media/CormorantGaramond-SemiBold.woff2": "/static/media/CormorantGaramond-SemiBold.02b74523a63c23591a4f.woff2",
+    "static/media/CormorantGaramond-Regular.woff2": "/static/media/CormorantGaramond-Regular.d5b28a37a51d1374d96a.woff2",
+    "static/media/CormorantGaramond-Bold.woff2": "/static/media/CormorantGaramond-Bold.6cd5523c8feb664d1b6b.woff2",
+    "static/media/CormorantGaramond-Italic.woff2": "/static/media/CormorantGaramond-Italic.5081064642a4fef2825e.woff2",
+    "static/media/logo-book.png": "/static/media/logo-book.73788ed1eb1475dafd03.png",
+    "static/media/menu-close.svg": "/static/media/menu-close.17dba8f160ef52b1764b5c6b55b8f485.svg",
+    "static/media/search.svg": "/static/media/search.056a3c48a23acb411c6e.svg",
+    "static/media/menu-bars.svg": "/static/media/menu-bars.620d038dc2ebf0473ad86b827a78dcd5.svg",
+    "index.html": "/index.html",
+    "main.e73c9e0b.css.map": "/static/css/main.e73c9e0b.css.map",
+    "main.eb533657.js.map": "/static/js/main.eb533657.js.map",
+    "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e73c9e0b.css",
+    "static/js/main.eb533657.js"
+  ]
+}
