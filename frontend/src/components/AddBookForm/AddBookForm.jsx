@@ -5,21 +5,29 @@ import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useAddBookMutation } from "../../features/bookApiSlice";
+import {
+  useAddBookMutation,
+  useUploadImageMutation,
+} from "../../features/bookApiSlice";
+import Loader from "../../components/Loader/Loader";
 import "./AddBookForm.scss";
 
 function AddBookForm() {
   const [file, setFile] = useState("");
+  const [filePreview, setFilePreview] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [authorValue, setAuthorValue] = useState("");
   const [publishedValue, setPublishedValue] = useState("");
   const [reviewValue, setReviewValue] = useState("");
   const [quotesValue, setQuotesValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { category } = useParams();
   const navigate = useNavigate();
 
-  const [addBook, { isLoading }] = useAddBookMutation();
+  const [addBook] = useAddBookMutation();
+
+  const [uploadImage] = useUploadImageMutation();
 
   const { userInfo } = useSelector((state) => state.user);
 
@@ -35,37 +43,55 @@ function AddBookForm() {
   }
 
   const handleChange = (e) => {
+    setLoading(true);
+
     if (e.target.files.length) {
-      setFile(URL.createObjectURL(e.target.files[0]));
+      setFile(e.target.files[0]);
+      setFilePreview(URL.createObjectURL(e.target.files[0]));
+      setLoading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const bookData = {
-      user: userInfo._id,
-      title: titleValue,
-      authors: [authorValue],
-      publishedDate: publishedValue,
-      image: file,
-      status: statusVal,
-      rating: 0,
-      quotes: [quotesValue],
-      review: "N/A",
-    };
+    // upload image
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const res = await uploadImage(formData).unwrap();
 
-    await addBook(bookData);
-    enqueueSnackbar("Book added!", { variant: "success" });
-    navigate("/books");
+      const bookData = {
+        user: userInfo._id,
+        title: titleValue,
+        authors: [authorValue],
+        publishedDate: publishedValue,
+        image: res.image,
+        status: statusVal,
+        rating: 0,
+        quotes: [quotesValue],
+        review: "N/A",
+      };
+
+      await addBook(bookData);
+      enqueueSnackbar("Book added!", { variant: "success" });
+      navigate("/books");
+    } catch (error) {
+      enqueueSnackbar("Error adding a book", { variant: "error" });
+    }
   };
 
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div className="add-book__upload">
         <label htmlFor="upload-button">
-          {file ? (
-            <img src={file} alt="book" style={{ maxWidth: '200px', maxHeight: '300px'}} />
+          {loading && <Loader />}
+          {filePreview ? (
+            <img
+              src={filePreview}
+              alt="book"
+              style={{ maxWidth: "200px", maxHeight: "300px" }}
+            />
           ) : (
             <p className="upload-button">
               <BiUpload size={20} />

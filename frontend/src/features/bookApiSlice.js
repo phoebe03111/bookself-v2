@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { BOOKS_URL } from "../constants";
+import { BOOKS_URL, UPLOAD_URL } from "../constants";
 
 export const bookSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -43,6 +43,14 @@ export const bookSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Books"],
     }),
+
+    uploadImage: builder.mutation({
+      query: (data) => ({
+        url: UPLOAD_URL,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -52,4 +60,5 @@ export const {
   useAddBookMutation,
   useUpdateBookMutation,
   useDeleteBookMutation,
+  useUploadImageMutation,
 } = bookSlice;
