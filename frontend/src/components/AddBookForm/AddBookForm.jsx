@@ -70,7 +70,7 @@ function AddBookForm() {
         status: statusVal,
         rating: 0,
         quotes: [quotesValue],
-        review: "N/A",
+        review: reviewValue,
       };
 
       await addBook(bookData);
