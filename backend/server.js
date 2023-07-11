@@ -27,18 +27,19 @@ app.use("/api/users", userRoutes);
 app.use("/api/upload", uploadRoutes);
 
 const __dirname = path.resolve(); // Set __dirname to current directory
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 if (process.env.NODE_ENV === "production") {
-  app.use("/uploads", express.static("/var/data/uploads"));
-  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  // Set static folder
+  app.use(express.static(path.join(__dirname, "frontend/build")));
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
-  );
+  // Any route that is not api will be redirected to index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
 } else {
-  app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
   app.get("/", (req, res) => {
-    res.send("API is running....");
+    res.send("API is running...");
   });
 }
 
