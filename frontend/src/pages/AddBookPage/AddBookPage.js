@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Loader from "../../components/Loader/Loader";
 import SearchResult from "../../components/SearchResult/SearchResult";
+import AddBookForm from "../../components/AddBookForm/AddBookForm";
 import "./AddBookPage.scss";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -48,13 +49,13 @@ function AddBookPage() {
         </div>
       </div>
 
-      {/* <div className="add-book__form">
+      <div className="add-book__form">
         <h2 className="add-book__heading">
           Cannot find your book? Add it here.
         </h2>
 
         <AddBookForm /> 
-      </div> */}
+      </div>
     </main>
   );
 }

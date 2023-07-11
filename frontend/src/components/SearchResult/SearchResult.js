@@ -26,7 +26,6 @@ function SearchResult({ result }) {
     statusVal = "finished-reading";
   }
 
-  const { id } = result;
   const { title, authors, publishedDate, imageLinks, description } =
     result.volumeInfo;
 
@@ -37,12 +36,10 @@ function SearchResult({ result }) {
       authors,
       publishedDate,
       image: imageLinks.thumbnail,
-      description,
       status: statusVal,
       rating: 0,
       quotes: [],
       review: "N/A",
-      googleId: id,
     };
 
     await addBook(bookData);

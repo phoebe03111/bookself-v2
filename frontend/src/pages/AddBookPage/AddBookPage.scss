@@ -18,9 +18,9 @@
     @include white-bg;
     width: 100%;
 
-    // @include tablet {
-    //   width: 50%;
-    // }
+    @include tablet {
+      width: 50%;
+    }
   }
 
   &__search {
