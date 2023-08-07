@@ -35,3 +35,11 @@ https://bookself.onrender.com/
 
 
 
+**Demo account** 
+
+Email: nini@email.com
+
+Password: nini123
+
+
+
